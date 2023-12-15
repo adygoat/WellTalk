@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,19 +19,21 @@ public class AppointmentEntity {
     private String Date;
     private String Time;
     private String message;
-    private int userid;
+
+    @ManyToOne
+    @JoinColumn(name = "userid", nullable=false)
+    private UserEntity user;
+
     private Boolean decision;
 
     public AppointmentEntity() {
     }
 
-    public AppointmentEntity(int makeappointmentid, String date, String time, String message, int userid, Boolean decision) {
-        super();
+    public AppointmentEntity(int makeappointmentid, String date, String time, String message, Boolean decision) {
         this.makeappointmentid = makeappointmentid;
         Date = date;
         Time = time;
         this.message = message;
-        this.userid = userid;
         this.decision = decision;
     }
 
@@ -37,7 +41,7 @@ public class AppointmentEntity {
         return makeappointmentid;
     }
 
-    public void setAppointmentid(int makeappointmentid) {
+    public void setMakeAppointmentid(int makeappointmentid) {
         this.makeappointmentid = makeappointmentid;
     }
 
@@ -65,12 +69,12 @@ public class AppointmentEntity {
         this.message = message;
     }
 
-    public int getUserid() {
-        return userid;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUserid(int userid) {
-        this.userid = userid;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     public Boolean getDecision() {

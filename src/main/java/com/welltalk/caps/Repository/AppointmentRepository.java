@@ -3,14 +3,14 @@ package com.welltalk.caps.Repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.welltalk.caps.Entity.AppointmentEntity;
+import com.welltalk.caps.Entity.UserEntity;
 
-public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Integer> {
-	List<AppointmentEntity> findByUseridAndDecision(int userid, boolean decision);
-	 List<AppointmentEntity> findByUserid(int userid);
-	 List<AppointmentEntity> findByDecision(boolean decision);
-
+@Repository
+public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Object> {
+    
 
 
 

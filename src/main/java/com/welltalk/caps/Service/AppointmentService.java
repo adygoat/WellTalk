@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.welltalk.caps.Entity.AppointmentEntity;
+import com.welltalk.caps.Entity.UserEntity;
 import com.welltalk.caps.Repository.AppointmentRepository;
+import com.welltalk.caps.Repository.UserRepository;
 
 @Service
 public class AppointmentService {
@@ -13,6 +15,8 @@ public class AppointmentService {
 	@Autowired
 	private AppointmentRepository appointmentRepository;
 	
+	@Autowired
+	private UserRepository userRepository;
 	
 	public Iterable<AppointmentEntity> getRequest(){
 		return appointmentRepository.findAll();
@@ -26,7 +30,7 @@ public class AppointmentService {
 	public ResponseEntity updateAppointment(int makeappointmentid, String stringToken) {
 		AppointmentEntity appointmentUpdate = appointmentRepository.findById(makeappointmentid).get();
 		
-		if(appointmentUpdate.getDecision() == null) {
+		if(appointmentUpdate.getDecision() == false) {
 			appointmentUpdate.setDecision(true);
 			appointmentRepository.save(appointmentUpdate);
 			return ResponseEntity.ok("Request Accepted");
@@ -34,5 +38,20 @@ public class AppointmentService {
 			return ResponseEntity.ok("Request Already Accepted");
 		}
 	}
-	
+	 public void createAppointment(Long userid, AppointmentEntity appointment) {
+	       
+	        UserEntity user = userRepository.findById(userid).get();
+
+	        AppointmentEntity newAppointment = new AppointmentEntity();
+
+	        newAppointment.setUser(user);
+            newAppointment.setDate(appointment.getDate());
+            newAppointment.setTime(appointment.getTime());
+            newAppointment.setMessage(appointment.getMessage());
+            newAppointment.setDecision(false);
+
+	        appointmentRepository.save(newAppointment);
+	   
+
+	 }
 }

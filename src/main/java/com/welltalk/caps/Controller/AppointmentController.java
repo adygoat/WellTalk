@@ -25,6 +25,13 @@ public class AppointmentController {
     @Autowired
     private AppointmentRepository appointmentRepository;
     
+    @PostMapping("/requestAppointment")
+    public ResponseEntity<?> requestAppointment(@RequestParam(value="user") Long userid, @RequestBody AppointmentEntity appointment){
+        appointmentService.createAppointment(userid, appointment);
+        return ResponseEntity.ok("appointment requested successfully");
+    }
+    
+   
     @PostMapping("/setAppointment")
     public ResponseEntity<?> createAppointment(@RequestBody AppointmentEntity appointmentEntry) {
         try {
@@ -60,22 +67,22 @@ public class AppointmentController {
     }
     
 
-    @GetMapping("/getAppointmentsByUserAndDecision/{userid}")
-    public ResponseEntity<List<AppointmentEntity>> getAppointmentsByUserAndDecision(
-        @PathVariable(name = "userid") Integer userid) {
-        try {
-            List<AppointmentEntity> appointments = appointmentRepository.findByUseridAndDecision(userid, true);
-
-            if (appointments.isEmpty()) {
-                return ResponseEntity.noContent().build();
-            } else {
-                return ResponseEntity.ok(appointments);
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.emptyList());
-        }
-    }
+//    @GetMapping("/getAppointmentsByUserAndDecision/{userid}")
+//    public ResponseEntity<List<AppointmentEntity>> getAppointmentsByUserAndDecision(
+//        @PathVariable(name = "userid") Integer userid) {
+//        try {
+//            List<AppointmentEntity> appointments = appointmentRepository.findByUseridAndDecision(userid, true);
+//
+//            if (appointments.isEmpty()) {
+//                return ResponseEntity.noContent().build();
+//            } else {
+//                return ResponseEntity.ok(appointments);
+//            }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(Collections.emptyList());
+//        }
+//    }
     
     @GetMapping("/all")
     public ResponseEntity<Object> getRequest() {
