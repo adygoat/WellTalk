@@ -9,9 +9,9 @@ import com.welltalk.caps.Entity.AppointmentEntity;
 import com.welltalk.caps.Entity.UserEntity;
 
 @Repository
-public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Object> {
-    
+public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Integer> {
 
+    List<AppointmentEntity> findByUserAndDecision(UserEntity user, Boolean decision);
 
 
 

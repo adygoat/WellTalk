@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import com.welltalk.caps.Entity.AppointmentEntity;
 
 import com.welltalk.caps.Repository.AppointmentRepository;
+import com.welltalk.caps.Repository.UserRepository;
 import com.welltalk.caps.Service.AppointmentService;
 
 @RestController
@@ -19,6 +20,9 @@ import com.welltalk.caps.Service.AppointmentService;
 
 public class AppointmentController {
 
+	@Autowired
+	UserRepository userRepository;
+	
 	@Autowired 
 	AppointmentService appointmentService;
 	
@@ -83,7 +87,23 @@ public class AppointmentController {
 //                    .body(Collections.emptyList());
 //        }
 //    }
-    
+    @GetMapping("/getAppointmentsByUserAndDecision/{userid}")
+    public ResponseEntity<List<AppointmentEntity>> getAppointmentsByUserAndDecision(
+        @PathVariable(name = "userid") Long userid) {
+        try {
+            List<AppointmentEntity> appointments = appointmentRepository.findByUserAndDecision(userRepository.findByUserid(userid), true);
+
+            if (appointments.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.ok(appointments);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.emptyList());
+        }
+    }
+
     @GetMapping("/all")
     public ResponseEntity<Object> getRequest() {
         return new ResponseEntity<>(appointmentService.getRequest(), HttpStatus.OK);
